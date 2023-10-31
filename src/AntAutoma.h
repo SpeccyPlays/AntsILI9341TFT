@@ -44,7 +44,7 @@ class Ant {
     //float angle; left this here if I want to draw according to direction ant faces
     BigCoOrds velocity;
     BigCoOrds desiredVelocity;
-    CoOrds steeringForce;
+    BigCoOrds steeringForce;
     state antState;
     CoOrds setMagnitude(CoOrds temp, int8_t newMag);
     BigCoOrds setMagnitude(BigCoOrds temp, int8_t newMag);

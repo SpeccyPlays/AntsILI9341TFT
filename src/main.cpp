@@ -39,7 +39,7 @@ void loop() {
     //tft.drawLine(ants[i].getCurrentX(), ants[i].getCurrentY(), ants[i].getDesiredX(), ants[i].getDesiredY(), TFT_BLACK);
   }
   counter ++;
-  if (counter % 150 == 0){
+  if (counter % 199 == 0){
     for (byte i = 0; i < amountOfAnts; i++){
       ants[i].setState(WANDER);
     }
