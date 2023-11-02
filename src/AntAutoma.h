@@ -11,8 +11,8 @@ class Ant {
     All the class instances
     These are used to determine the ants behavious
     */
-    const static int16_t screenWidth = 240;
-    const static int16_t screenHeight = 320;
+    const static int16_t screenWidth = 320;
+    const static int16_t screenHeight = 240;
     const static int8_t maxSpeed = 4;//Top speed of the ant
     const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
     const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
