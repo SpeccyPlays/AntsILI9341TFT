@@ -7,8 +7,8 @@
 #define DCS  5  /* Chip select pin (T_CS) of touch screen */
 #define DCLK 6  /* Clock pin (T_CLK) of touch screen */
 /*
-This is intended as an ant simulator to run on an Arduino Uno connected to a ST7735 TFT
-add the screenwidth and screenheight values to the .h file also
+This is intended as an ant simulator to run on an Arduino Uno connected to a ILI9341 TFT
+add the screenwidth and screenheight values to the antautomata.h file also
 */
 //set up screen
 const uint16_t SCREENWIDTH = 320;
@@ -55,6 +55,12 @@ void loop() {
   }
   for (byte i = 0; i < amountOfAnts; i++){
     tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, TFT_WHITE);
+    for (byte j = 0; j < amountOfAnts; j++){
+      if(i != j){
+        ants[i].detectCollision(ants[j].getCurrentX(), ants[j].getCurrentY(), 5);
+      }
+    }
+    
     ants[i].moveAnt();
   }
   delay(waitDelay);

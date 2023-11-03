@@ -67,19 +67,12 @@ void Ant::slowDown(){
     }
 };
 void Ant::avoiding(){
+    /*
+    This gives the best looking behaviour
+    They still occasionally go through each other
+    */
     if (detectCollision(avoidPos.x, avoidPos.y, collisionDetectRadius)){
-        if (velocity.x < 0){
-            velocity.x -= 1;
-        }
-        else {
-            velocity.x += 1;
-        }
-        if (velocity.y < 0){
-            velocity.y -= 1;
-        }
-        else {
-            velocity.y += 1;
-        }
+        velocity.x = (avoidPos.x -velocity.x) * 0.01;
     }
 };
 void Ant::seeking(int16_t x, int16_t y){
