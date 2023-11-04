@@ -1,15 +1,16 @@
 #include <Arduino.h>
 #include "AntAutoma.h"
-
-void Ant::resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity){
-    this->currentPos.x = random(boundary, screenWidth - boundary); //random(10, screenWidth - 10);
-    this->currentPos.y = random(boundary, screenHeight - boundary);//random(10, screenHeight - 10);
-    //this->angle = random(360) * PI / 180.0;//convert to radians don't forget
+void Ant::resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity, uint8_t boundary){
+    this->currentPos.x = random(boundary, (screenWidth - boundary)); //random(10, screenWidth - 10);
+    this->currentPos.y = random(boundary, (screenHeight - boundary));//random(10, screenHeight - 10);
     this->antState = WANDER;
-    this->velocity.x = velocity;
-    this->velocity.y = velocity;
-    this->desired.x = screenWidth /2;
-    this->desired.y = screenHeight /2;
+    this->velocity.x = 4;
+    this->velocity.y = 4;
+    setDesired(screenWidth / 2, screenHeight / 2);
+};
+void Ant::setCurrentPosToOldPos(){
+    oldPos.x = currentPos.x;
+    oldPos.y = currentPos.y;
 };
 void Ant::setState(state newState){
     this->antState = newState;
@@ -37,6 +38,21 @@ BigCoOrds Ant::setMagnitude(BigCoOrds temp, int8_t newMag){
         temp.y = (temp.y / length) * newMag;
     }
     return temp;
+};
+void Ant::checkBoundary(int16_t width, int16_t height, uint8_t boundary){
+    //check if we're going to go off screen
+    if (currentPos.x < boundary){
+        velocity.x += 2;
+    }
+    else if (currentPos.x > (width - boundary)){
+        velocity.x -= 2;
+    }
+    if (currentPos.y < boundary){
+        velocity.y += 2;
+    }
+    else if (currentPos.y > (height - boundary)){
+        velocity.y -= 2;
+    }
 };
 uint8_t Ant::detectCollision(int16_t x, int16_t y, uint8_t r){
   /*
@@ -66,13 +82,14 @@ void Ant::slowDown(){
         }
     }
 };
-void Ant::avoiding(){
+void Ant::avoidAnts(int16_t avoidX, int16_t avoidY, byte collisionDetectRadius){
     /*
     This gives the best looking behaviour
     They still occasionally go through each other
     */
-    if (detectCollision(avoidPos.x, avoidPos.y, collisionDetectRadius)){
-        velocity.x = (avoidPos.x -velocity.x) * 0.01;
+    if (detectCollision(avoidX, avoidY, collisionDetectRadius)){
+        velocity.x *= 0.1;//* 0.01;
+        //velocity.y = (avoidY- currentPos.y) * 0.01;
     }
 };
 void Ant::seeking(int16_t x, int16_t y){
@@ -142,39 +159,6 @@ void Ant::steering(){
     velocity.x += steeringForce.x;
     velocity.y += steeringForce.y;
 };
-void Ant::moveAnt(){
-    /*
-    Check boundaries first, see what state it's in, then do everything needed to move
-    */
-    oldPos.x = currentPos.x;
-    oldPos.y = currentPos.y;
-    if (currentPos.x < boundary){
-        velocity.x += 2;
-    }
-    else if (currentPos.x > screenWidth - boundary){
-        velocity.x -= 2;
-    }
-    if (currentPos.y < boundary){
-        velocity.y += 2;
-    }
-    else if (currentPos.y > screenHeight - boundary){
-        velocity.y -= 2;
-    }
-    switch(antState){
-        case WANDER :
-        wandering();
-        break;
-        case SEEK :
-        slowDown();
-        break;
-        case AVOID :
-        avoiding();
-        wandering();
-        break;
-    }
-    steering();
-    locomotion();
-};
 void Ant::locomotion(){
     currentPos.x += velocity.x;
     currentPos.y += velocity.y;
@@ -196,4 +180,7 @@ int16_t Ant::getDesiredX(){
 };
 int16_t Ant::getDesiredY(){
     return desired.y;
+};
+state Ant::getState(){
+    return antState;
 };

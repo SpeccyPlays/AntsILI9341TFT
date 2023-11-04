@@ -19,12 +19,12 @@ int X_RawData;
 int Y_RawData;
 int X_Coord;
 int Y_Coord;
-byte waitDelay = 50;
+byte waitDelay = 250;
 byte counter = 0;
 int16_t foodX = 0;
 int16_t foodY = 0;
 byte showFood = 0;
-AntController antsCtl(SCREENWIDTH, SCREENWIDTH, 25);
+AntController antsCtl(SCREENWIDTH, SCREENWIDTH, 2);
 
 void setup() {
   // put your setup code here, to run once:

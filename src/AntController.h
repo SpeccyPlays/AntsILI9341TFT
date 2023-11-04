@@ -22,6 +22,8 @@ public:
     AntController(int16_t screenWidth, int16_t screenHeight, byte numOfAnts);
     void init();
     void moveAnts();
+    void setToWander();
+    void setToSeek(int16_t x, int16_t y);
 
 }; //end class
 
