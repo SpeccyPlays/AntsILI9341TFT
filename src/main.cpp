@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "TFT_ILI9341.h"
 #include "TFT_Touch.h"
+#include "AntController.h"
 #include "AntAutoma.h"
 #define DOUT 3  /* Data out pin (T_DO) of touch screen */
 #define DIN  4  /* Data in pin (T_DIN) of touch screen */
@@ -13,37 +14,30 @@ add the screenwidth and screenheight values to the antautomata.h file also
 //set up screen
 const uint16_t SCREENWIDTH = 320;
 const uint16_t SCREENHEIGHT = 240;
-TFT_ILI9341 tft(SCREENWIDTH, SCREENHEIGHT);
-//setup touch screen
 TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
 int X_RawData;
 int Y_RawData;
 int X_Coord;
 int Y_Coord;
-//set up ant
-Ant ants[25];
-byte amountOfAnts = 25;
 byte waitDelay = 50;
 byte counter = 0;
 int16_t foodX = 0;
 int16_t foodY = 0;
 byte showFood = 0;
+AntController antsCtl(SCREENWIDTH, SCREENWIDTH, 25);
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  tft.begin();
-  tft.setRotation(1);
-  tft.fillScreen(TFT_BLACK);
-  randomSeed(analogRead(0));
-  for (byte i = 0; i < amountOfAnts; i++){
-    ants[i].resetAnt(SCREENWIDTH, SCREENHEIGHT, 4);
-  }
+  antsCtl.init();
   touch.setResolution(SCREENWIDTH, SCREENHEIGHT);
   touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
 }
 void loop() {
+  antsCtl.moveAnts();
+  delay(waitDelay);
   // put your main code here, to run repeatedly:
-  if (touch.Pressed()){
+  /*if (touch.Pressed()){
     //get the data if the touch screen has been pressed
     //set food to same values (not sure if can go direct)
     X_Coord = touch.X();
@@ -52,20 +46,6 @@ void loop() {
     foodY = Y_Coord;
     tft.drawCircle(foodX, foodY, 4, TFT_GREEN);
     showFood = 1;
-  }
-  for (byte i = 0; i < amountOfAnts; i++){
-    tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, TFT_WHITE);
-    for (byte j = 0; j < amountOfAnts; j++){
-      if(i != j){
-        ants[i].detectCollision(ants[j].getCurrentX(), ants[j].getCurrentY(), 5);
-      }
-    }
-    
-    ants[i].moveAnt();
-  }
-  delay(waitDelay);
-  for (byte i = 0; i < amountOfAnts; i++){
-    tft.drawCircle(ants[i].getOldX(), ants[i].getOldY(), 2, TFT_BLACK);
   }
   counter ++;
   if (counter % 199 == 0){
@@ -83,5 +63,5 @@ void loop() {
       ants[i].setState(SEEK);
       ants[i].setDesired(foodX, foodY);
     }
-  }
+  }*/
 }
