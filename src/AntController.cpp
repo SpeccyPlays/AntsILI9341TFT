@@ -30,8 +30,14 @@ void AntController::moveAnts(){
         ants[i].avoidAnts(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius);
       }
     }
-    if (ants[i].getState() == WANDER){
+    state tempState = ants[i].getState();
+    switch(tempState){
+        case SEEK :
+        ants[i].slowDown(collisionDetectRadius);
+        break;
+        case WANDER :
         ants[i].wandering();
+        break;
     }
     ants[i].steering();
     ants[i].locomotion();
@@ -47,5 +53,12 @@ void AntController::setToWander(){
 void AntController::setToSeek(int16_t x, int16_t y){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].setState(SEEK);
+        ants[i].setDesired(x, y);
     }
+};
+void AntController::showFood(int16_t x, int16_t y){
+    tft.drawCircle(x, y, 4, TFT_GREEN);
+};
+void AntController::removeFood(int16_t x, int16_t y){
+    tft.drawCircle(x, y, 4, TFT_BLACK);
 };

@@ -59,17 +59,17 @@ uint8_t Ant::detectCollision(int16_t x, int16_t y, uint8_t r){
   Check if we're in the circle of x and y
   Including the radius as there's a different range for if we hit another ant or desired location
   */
-  int16_t xx = x - currentPos.x;
-  int16_t yy = y - currentPos.y;
-  int16_t rr = r + r;
-  if ((( xx * xx) + (yy * yy)) < (rr * rr) ){
+  int16_t dx = x - currentPos.x;
+  int16_t dy = y - currentPos.y;
+  int16_t rr = r * r;
+  if (( dx * dx) + (dy * dy) < rr ){
     return 1;
   }
   else {
     return 0;
   }
 };
-void Ant::slowDown(){
+void Ant::slowDown(uint8_t collisionDetectRadius){
     /*
     Slow down if we're nearing the desired target
     */
@@ -88,8 +88,8 @@ void Ant::avoidAnts(int16_t avoidX, int16_t avoidY, byte collisionDetectRadius){
     They still occasionally go through each other
     */
     if (detectCollision(avoidX, avoidY, collisionDetectRadius)){
-        //velocity.x += (avoidX- currentPos.x)* 0.01;
-        //velocity.y = (avoidY- currentPos.y) * 0.01;
+        //velocity.x += (avoidX- currentPos.x) /2;//* 0.01;
+        //velocity.y *= -1;// (avoidY- currentPos.y) * 0.01;
     }
 };
 void Ant::seeking(int16_t x, int16_t y){

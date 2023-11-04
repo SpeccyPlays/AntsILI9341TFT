@@ -15,8 +15,8 @@ class Ant {
     const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
     const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
     //const static uint8_t boundary = 5;//screenboundary
-    const static uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
-    const static uint8_t antDetectRadius = 5;
+    //const static uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
+    //const static uint8_t antDetectRadius = 5;
     public :
     void resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity, uint8_t boundary);
     CoOrds currentPos;//where we're at now
@@ -36,7 +36,7 @@ class Ant {
     void avoidAnts(int16_t avoidX, int16_t avoidY, byte collisionDetectRadius);
     void wandering();
     void steering();
-    void slowDown();
+    void slowDown(uint8_t collisionDetectRadius);
     void locomotion();
     uint8_t detectCollision(int16_t x, int16_t y, uint8_t r);
     private :
