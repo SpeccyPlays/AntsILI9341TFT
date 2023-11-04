@@ -17,6 +17,7 @@ void AntController::init(){
     randomSeed(analogRead(0));
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].resetAnt(screenWidth, screenHeight, maxSpeed, boundary);
+        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, TFT_WHITE);
     }
 };
 void AntController::moveAnts(){
@@ -24,9 +25,9 @@ void AntController::moveAnts(){
     ants[i].setCurrentPosToOldPos();
     ants[i].checkBoundary(screenWidth, screenHeight, boundary);
     for (byte j = 0; j < numOfAnts; j++){
-      if(j != i){
+      if(i != j){
         //ants[i].detectCollision(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius);
-        //ants[i].avoidAnts(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius);
+        ants[i].avoidAnts(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius);
       }
     }
     if (ants[i].getState() == WANDER){

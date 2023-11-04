@@ -88,7 +88,7 @@ void Ant::avoidAnts(int16_t avoidX, int16_t avoidY, byte collisionDetectRadius){
     They still occasionally go through each other
     */
     if (detectCollision(avoidX, avoidY, collisionDetectRadius)){
-        velocity.x *= 0.1;//* 0.01;
+        //velocity.x += (avoidX- currentPos.x)* 0.01;
         //velocity.y = (avoidY- currentPos.y) * 0.01;
     }
 };
