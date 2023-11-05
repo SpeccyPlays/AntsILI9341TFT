@@ -16,11 +16,12 @@ const uint16_t SCREENWIDTH = 320;
 const uint16_t SCREENHEIGHT = 240;
 TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
 byte waitDelay = 50;
-byte counter = 0;
+unsigned long startTime = 0;
+uint16_t foodDisplayTime = 5000;
 int16_t foodX = 0;
 int16_t foodY = 0;
 byte showFood = 0;
-AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 1);
+AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 25);
 
 void setup() {
   // put your setup code here, to run once:
@@ -41,10 +42,10 @@ void loop() {
     showFood = 1;
     antsCtl.showFood(foodX, foodY);
     antsCtl.setToSeek(foodX, foodY);
+    startTime = millis();
   }
-  counter ++;
-  if (counter % 199 == 0){
-    counter = 0;
+  if (millis() - startTime > foodDisplayTime){
+    startTime = 0;
     showFood = 0;
     antsCtl.removeFood(foodX, foodY);
     antsCtl.setToWander();
