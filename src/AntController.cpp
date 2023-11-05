@@ -10,13 +10,13 @@ AntController::AntController(int16_t screenWidth, int16_t screenHeight, byte num
     TFT_ILI9341 temp(screenWidth, screenHeight);
     this->tft = temp;
 };
-void AntController::init(){
+void AntController::init(int8_t startSpeed){
     tft.begin();
     tft.setRotation(1);
     tft.fillScreen(TFT_BLACK);
     randomSeed(analogRead(0));
     for (byte i = 0; i < numOfAnts; i++){
-        ants[i].resetAnt(screenWidth, screenHeight, maxSpeed, boundary);
+        ants[i].resetAnt(screenWidth, screenHeight, startSpeed, boundary);
         tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, TFT_WHITE);
     }
 };
@@ -40,7 +40,9 @@ void AntController::moveAnts(){
         ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
         ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
     }
-    state tempState = ants[i].antState;
+    state tempState = ants[i].getState();
+
+    //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
     if (tempState != WANDER){
         if (tempState == SEEK){
             ants[i].slowDown(collisionDetectRadius);
@@ -64,6 +66,11 @@ void AntController::setToSeek(int16_t x, int16_t y){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].setState(SEEK);
         ants[i].setDesired(x, y);
+    }
+};
+void AntController::setToAvoid(int16_t x, int16_t y){
+    for (byte i = 0; i < numOfAnts; i++){
+        ants[i].setAvoidPos(x, y);
     }
 };
 void AntController::showFood(int16_t x, int16_t y){

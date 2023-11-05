@@ -26,7 +26,7 @@ AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 25);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  antsCtl.init();
+  antsCtl.init(4);
   touch.setResolution(SCREENWIDTH, SCREENHEIGHT);
   touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
 }
