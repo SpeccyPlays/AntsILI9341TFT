@@ -6,14 +6,12 @@ void Ant::resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity, u
     this->antState = WANDER;
     this->velocity.x = 4;
     this->velocity.y = 4;
+    color = TFT_WHITE;
     setDesired(screenWidth / 2, screenHeight / 2);
 };
 void Ant::setCurrentPosToOldPos(){
     oldPos.x = currentPos.x;
     oldPos.y = currentPos.y;
-};
-void Ant::setState(state newState){
-    antState = newState;
 };
 void Ant::setDesired(int16_t x, int16_t y){
     desired.x = x;
@@ -45,7 +43,7 @@ void Ant::addToVelocityX(int32_t x){
 void Ant::addToVelocityY(int32_t y){
     velocity.y += y;
 };
-void Ant::checkBoundary(int16_t width, int16_t height, uint8_t boundary){
+void Ant::checkBoundary(int16_t &width, int16_t &height, uint8_t &boundary){
     //check if we're going to go off screen
     if (currentPos.x < boundary){
         velocity.x += 2;
@@ -60,7 +58,7 @@ void Ant::checkBoundary(int16_t width, int16_t height, uint8_t boundary){
         velocity.y -= 2;
     }
 };
-uint8_t Ant::detectCollision(int16_t x, int16_t y, int16_t r){
+uint8_t Ant::detectCollision(int16_t &x, int16_t &y, int16_t r){
   /*
   Check if we're in the circle of x and y
   Including the radius as there's a different range for if we hit another ant or desired location
@@ -75,7 +73,7 @@ uint8_t Ant::detectCollision(int16_t x, int16_t y, int16_t r){
     return 0;
   }
 };
-void Ant::slowDown(uint8_t collisionDetectRadius){
+void Ant::slowDown(uint8_t &collisionDetectRadius){
     /*
     Slow down if we're nearing the desired target
     */

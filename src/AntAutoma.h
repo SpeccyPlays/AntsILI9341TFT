@@ -2,10 +2,11 @@
 #define ANTAUTOMA_H
 #include <Arduino.h>
 #include "CoOrds.h"
+#include "TFT_ILI9341.h"
 /*
 This is the class for a single ant in the system
 */
-enum state {WANDER = 0, SEEK = 1, AVOID = 2};
+enum state {WANDER = 0, SEEK = 1, HASFOOD = 2};
 class Ant {
     /*
     All the class instances
@@ -24,21 +25,22 @@ class Ant {
     int16_t getDesiredY();
     state getState();
     void setCurrentPosToOldPos();
-    void setState(state newState);
     void setDesired(int16_t x, int16_t y);
     void setAvoidPos(int16_t x, int16_t y);
     void addToVelocityX(int32_t x);
     void addToVelocityY(int32_t y);
-    void checkBoundary(int16_t width, int16_t height, uint8_t boundary);
+    void checkBoundary(int16_t &width, int16_t &height, uint8_t &boundary);
     void seeking(int16_t x, int16_t y);
     void wandering();
     void steering();
-    void slowDown(uint8_t collisionDetectRadius);
+    void slowDown(uint8_t &collisionDetectRadius);
     void locomotion();
-    uint8_t detectCollision(int16_t x, int16_t y, int16_t r);
+    int16_t color;
+    uint8_t detectCollision(int16_t &x, int16_t &y, int16_t r);
     state antState; //if I use a get state then it gets optimised out by the compiler
-    private :
     CoOrds currentPos;//where we're at now    
+    private :
+
     CoOrds oldPos;//used to remove ant from screen
     CoOrds desired;//where we want to go
     CoOrds avoidPos;//where to avoid
