@@ -33,21 +33,21 @@ void AntController::moveAnts(){
             dx += (ants[j].getCurrentX() - ants[i].getCurrentX());
             dy += (ants[j].getCurrentY() - ants[i].getCurrentY());
             neighbourAnts ++;
-        };
+        }
       }
     }
     if (neighbourAnts > 0){
         ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
         ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
     }
-    state tempState = ants[i].getState();
-    switch(tempState){
-        case SEEK :
-        ants[i].slowDown(collisionDetectRadius);
-        break;
-        case WANDER :
+    state tempState = ants[i].antState;
+    if (tempState != WANDER){
+        if (tempState == SEEK){
+            ants[i].slowDown(collisionDetectRadius);
+        }
+    }
+    else {
         ants[i].wandering();
-        break;
     }
     ants[i].steering();
     ants[i].locomotion();

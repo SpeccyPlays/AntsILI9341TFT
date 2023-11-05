@@ -20,7 +20,7 @@ byte counter = 0;
 int16_t foodX = 0;
 int16_t foodY = 0;
 byte showFood = 0;
-AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 20);
+AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 1);
 
 void setup() {
   // put your setup code here, to run once:

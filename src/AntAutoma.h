@@ -35,9 +35,10 @@ class Ant {
     void steering();
     void slowDown(uint8_t collisionDetectRadius);
     void locomotion();
-    uint8_t detectCollision(int16_t x, int16_t y, uint8_t r);
+    uint8_t detectCollision(int16_t x, int16_t y, int16_t r);
+        state antState;
     private :
-    CoOrds currentPos;//where we're at now
+    CoOrds currentPos;//where we're at now    
     CoOrds oldPos;//used to remove ant from screen
     CoOrds desired;//where we want to go
     CoOrds avoidPos;//where to avoid
@@ -45,7 +46,7 @@ class Ant {
     BigCoOrds velocity;
     BigCoOrds desiredVelocity;
     BigCoOrds steeringForce;
-    state antState;
+
     CoOrds setMagnitude(CoOrds temp, int8_t newMag);
     BigCoOrds setMagnitude(BigCoOrds temp, int8_t newMag);
     void calculateVelocties();

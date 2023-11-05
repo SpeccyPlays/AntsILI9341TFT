@@ -13,7 +13,7 @@ void Ant::setCurrentPosToOldPos(){
     oldPos.y = currentPos.y;
 };
 void Ant::setState(state newState){
-    this->antState = newState;
+    antState = newState;
 };
 void Ant::setDesired(int16_t x, int16_t y){
     desired.x = x;
@@ -60,7 +60,7 @@ void Ant::checkBoundary(int16_t width, int16_t height, uint8_t boundary){
         velocity.y -= 2;
     }
 };
-uint8_t Ant::detectCollision(int16_t x, int16_t y, uint8_t r){
+uint8_t Ant::detectCollision(int16_t x, int16_t y, int16_t r){
   /*
   Check if we're in the circle of x and y
   Including the radius as there's a different range for if we hit another ant or desired location
@@ -68,7 +68,7 @@ uint8_t Ant::detectCollision(int16_t x, int16_t y, uint8_t r){
   int16_t dx = x - currentPos.x;
   int16_t dy = y - currentPos.y;
   int16_t rr = r * r;
-  if (( dx * dx) + (dy * dy) < rr ){
+  if (( dx * dx) + (dy * dy) <= rr ){
     return 1;
   }
   else {
