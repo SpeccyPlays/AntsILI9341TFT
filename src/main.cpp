@@ -9,14 +9,15 @@
 //#define DCLK 6  /* Clock pin (T_CLK) of touch screen */
 /*
 This is intended as an ant simulator to run on an Arduino Uno connected to a ILI9341 TFT
-add the screenwidth and screenheight values to the antautomata.h file also
+set number of ants in AntController.h
+
 */
 //set up screen
 const uint16_t SCREENWIDTH = 320;
 const uint16_t SCREENHEIGHT = 240;
 //TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
 byte waitDelay = 50;
-AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 15);
+AntController antsCtl(SCREENWIDTH, SCREENHEIGHT);
 
 void setup() {
   // put your setup code here, to run once:

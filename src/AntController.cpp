@@ -1,12 +1,9 @@
 #include <Arduino.h>
 #include "AntController.h"
 
-AntController::AntController(int16_t screenWidth, int16_t screenHeight, byte numOfAnts){
+AntController::AntController(int16_t screenWidth, int16_t screenHeight){
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
-    this->numOfAnts = numOfAnts;
-    Ant ants[numOfAnts];
-    this->ants = ants;
     TFT_ILI9341 temp(screenWidth, screenHeight);
     this->tft = temp;
 };
@@ -63,25 +60,23 @@ void AntController::moveAnts(){
             ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
         }
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
-        if (showingFood == 1){
-            if (ants[i].detectCollision(foodPosX, foodPosY, 2)){
+        if (showingFood){
+            if (ants[i].detectCollision(foodPosX, foodPosY, antDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
                 ants[i].antState = HASFOOD;
                 ants[i].color = TFT_GREENYELLOW;
             }
         }
-        if (ants[i].antState != WANDER){
-            if (ants[i].antState == SEEK){
-                ants[i].slowDown(collisionDetectRadius);
-            }
-        }
-        else {
+        if (ants[i].antState == WANDER){
             ants[i].wandering();
+        }
+        else{
+            ants[i].slowDown(collisionDetectRadius);
         }
         ants[i].steering();
         ants[i].locomotion();
         tft.drawCircle(ants[i].getOldX(), ants[i].getOldY(), 2, TFT_BLACK);
-        tft.drawCircle(ants[i].currentPos.x, ants[i].currentPos.y, 2, ants[i].color);
+        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, ants[i].color);
     }
 };
 void AntController::setToWander(){

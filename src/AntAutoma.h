@@ -38,10 +38,9 @@ class Ant {
     int16_t color;
     uint8_t detectCollision(int16_t &x, int16_t &y, int16_t r);
     state antState; //if I use a get state then it gets optimised out by the compiler
-    CoOrds currentPos;//where we're at now    
+    CoOrds currentPos;//where we're at now
+    CoOrds oldPos;//used to remove ant from screen 
     private :
-
-    CoOrds oldPos;//used to remove ant from screen
     CoOrds desired;//where we want to go
     CoOrds avoidPos;//where to avoid
     //float angle; left this here if I want to draw according to direction ant faces

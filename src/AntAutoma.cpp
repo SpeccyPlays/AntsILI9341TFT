@@ -65,8 +65,9 @@ uint8_t Ant::detectCollision(int16_t &x, int16_t &y, int16_t r){
   */
   int16_t dx = x - currentPos.x;
   int16_t dy = y - currentPos.y;
-  int16_t rr = r * r;
-  if (( dx * dx) + (dy * dy) <= rr ){
+  uint16_t rr = r * r; //(r + r) * (r + r);
+  uint32_t distance = (dx * dx) + (dy * dy);
+  if ( distance <= rr ){
     return 1;
   }
   else {
@@ -97,9 +98,9 @@ void Ant::wandering(){
     Makes the movement look more natural
 
     */
-    int16_t tempX = currentPos.x + velocity.x * wanderingDistance;
-    int16_t tempY = currentPos.y + velocity.y * wanderingDistance;
-    float randAngle = random(360) * PI / 180.0;
+    int16_t tempX = currentPos.x + (velocity.x * wanderingDistance);
+    int16_t tempY = currentPos.y + (velocity.y * wanderingDistance);
+    float randAngle = (random(360) * PI) / 180.0;
     uint8_t randomDistance = random(10, 30);
     tempX += randomDistance * cos(randAngle);
     tempY += randomDistance * sin(randAngle);

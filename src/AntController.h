@@ -16,11 +16,11 @@ private:
     TFT_ILI9341 tft;
     int16_t screenWidth;
     int16_t screenHeight;
-    byte numOfAnts;
-    Ant *ants;
+    byte numOfAnts = 15;
+    Ant ants[15];
     uint8_t boundary = 5;//screenboundary
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
-    uint8_t antDetectRadius = 5;//size of circle to detect another ant
+    uint8_t antDetectRadius = 8;//size of circle to detect another ant
     float avoidanceFactor = 0.005;
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
     int16_t foodPosX = 0;
@@ -31,9 +31,9 @@ private:
     uint8_t showingAvoid = 0;
     //used for timing how long to show the food for
     unsigned long startTime = 0;
-    uint16_t foodDisplayTime = 5000;
+    unsigned long foodDisplayTime = 5000;
 public:
-    AntController(int16_t screenWidth, int16_t screenHeight, byte numOfAnts);
+    AntController(int16_t screenWidth, int16_t screenHeight);
     void init(int8_t startSpeed);
     void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
     void removeCoords(int16_t &x, int16_t &y, int16_t size);
