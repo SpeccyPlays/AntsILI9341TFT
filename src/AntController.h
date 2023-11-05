@@ -16,7 +16,7 @@ private:
     TFT_ILI9341 tft;
     int16_t screenWidth;
     int16_t screenHeight;
-    byte numOfAnts = 15;
+    byte numOfAnts = 25;
     Ant ants[25];
     uint8_t boundary = 5;//screenboundary
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide

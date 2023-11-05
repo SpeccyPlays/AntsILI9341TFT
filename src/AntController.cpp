@@ -20,15 +20,17 @@ void AntController::init(int8_t startSpeed){
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
 };
 void AntController::checkTouchScreen(){
-  if (touch.Pressed()){
-    //get the data if the touch screen has been pressed
-    //set food to same values (not sure if can go direct)
-    foodPos.x = touch.X();
-    foodPos.y = touch.Y();
-    showingFood = 1;
-    showCoords(foodPos.x, foodPos.y, collisionDetectRadius, TFT_GREEN);
-    startTime = millis();
-  }
+    if (!showingFood){
+        if (touch.Pressed()){
+            //get the data if the touch screen has been pressed
+            //set food to same values (not sure if can go direct)
+            foodPos.x = touch.X();
+            foodPos.y = touch.Y();
+            showingFood = 1;
+            showCoords(foodPos.x, foodPos.y, collisionDetectRadius, TFT_GREEN);
+            startTime = millis();
+        }
+    }
 };
 void AntController::checkFoodRemoveTimer(){
   if (millis() - startTime > foodDisplayTime){
