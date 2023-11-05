@@ -39,6 +39,12 @@ BigCoOrds Ant::setMagnitude(BigCoOrds temp, int8_t newMag){
     }
     return temp;
 };
+void Ant::addToVelocityX(int32_t x){
+    velocity.x += x;
+};
+void Ant::addToVelocityY(int32_t y){
+    velocity.y += y;
+};
 void Ant::checkBoundary(int16_t width, int16_t height, uint8_t boundary){
     //check if we're going to go off screen
     if (currentPos.x < boundary){
@@ -80,16 +86,6 @@ void Ant::slowDown(uint8_t collisionDetectRadius){
         if (velocity.y != 0){
             velocity.y /= 2;
         }
-    }
-};
-void Ant::avoidAnts(int16_t avoidX, int16_t avoidY, byte collisionDetectRadius){
-    /*
-    This gives the best looking behaviour
-    They still occasionally go through each other
-    */
-    if (detectCollision(avoidX, avoidY, collisionDetectRadius)){
-        //velocity.x += (avoidX- currentPos.x) /2;//* 0.01;
-        //velocity.y *= -1;// (avoidY- currentPos.y) * 0.01;
     }
 };
 void Ant::seeking(int16_t x, int16_t y){

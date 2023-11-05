@@ -24,11 +24,21 @@ void AntController::moveAnts(){
   for (byte i = 0; i < numOfAnts; i++){
     ants[i].setCurrentPosToOldPos();
     ants[i].checkBoundary(screenWidth, screenHeight, boundary);
+    int32_t dx = 0;
+    int32_t dy = 0;
+    uint16_t neighbourAnts = 0;
     for (byte j = 0; j < numOfAnts; j++){
       if(i != j){
-        //ants[i].detectCollision(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius);
-        ants[i].avoidAnts(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius);
+        if(ants[i].detectCollision(ants[j].getCurrentX(), ants[j].getCurrentY(), antDetectRadius)){
+            dx += (ants[j].getCurrentX() - ants[i].getCurrentX());
+            dy += (ants[j].getCurrentY() - ants[i].getCurrentY());
+            neighbourAnts ++;
+        };
       }
+    }
+    if (neighbourAnts > 0){
+        ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
+        ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
     }
     state tempState = ants[i].getState();
     switch(tempState){

@@ -18,6 +18,7 @@ private:
     uint8_t boundary = 5;//screenboundary
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
     uint8_t antDetectRadius = 4;
+    float avoidanceFactor = 0.001;
 public:
     AntController(int16_t screenWidth, int16_t screenHeight, byte numOfAnts);
     void init();
