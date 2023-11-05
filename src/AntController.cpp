@@ -23,10 +23,10 @@ void AntController::checkTouchScreen(){
   if (touch.Pressed()){
     //get the data if the touch screen has been pressed
     //set food to same values (not sure if can go direct)
-    foodPosX = touch.X();
-    foodPosY = touch.Y();
+    foodPos.x = touch.X();
+    foodPos.y = touch.Y();
     showingFood = 1;
-    showCoords(foodPosX, foodPosY, 4, TFT_GREEN);
+    showCoords(foodPos.x, foodPos.y, collisionDetectRadius, TFT_GREEN);
     startTime = millis();
   }
 };
@@ -34,8 +34,8 @@ void AntController::checkFoodRemoveTimer(){
   if (millis() - startTime > foodDisplayTime){
     startTime = 0;
     showingFood = 0;
-    removeCoords(foodPosX, foodPosY, 4);
-    setToWander();
+    removeCoords(foodPos.x, foodPos.y, collisionDetectRadius);
+    //setToWander();
   }
 }
 void AntController::moveAnts(){
@@ -61,7 +61,7 @@ void AntController::moveAnts(){
         }
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
         if (showingFood){
-            if (ants[i].detectCollision(foodPosX, foodPosY, antDetectRadius)){
+            if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
                 ants[i].antState = HASFOOD;
                 ants[i].color = TFT_GREENYELLOW;
@@ -70,8 +70,12 @@ void AntController::moveAnts(){
         if (ants[i].antState == WANDER){
             ants[i].wandering();
         }
-        else{
+        else if (ants[i].antState == HASFOOD){
             ants[i].slowDown(collisionDetectRadius);
+            if (ants[i].detectCollision(basePos.x, basePos.y, collisionDetectRadius)){
+                ants[i].antState = WANDER;
+                ants[i].color = TFT_WHITE;
+            }
         }
         ants[i].steering();
         ants[i].locomotion();
