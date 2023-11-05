@@ -21,7 +21,7 @@ uint16_t foodDisplayTime = 5000;
 int16_t foodX = 0;
 int16_t foodY = 0;
 byte showFood = 0;
-AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 25);
+AntController antsCtl(SCREENWIDTH, SCREENHEIGHT, 15);
 
 void setup() {
   // put your setup code here, to run once:

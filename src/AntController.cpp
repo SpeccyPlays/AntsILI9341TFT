@@ -40,8 +40,7 @@ void AntController::moveAnts(){
         ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
         ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
     }
-    state tempState = ants[i].getState();
-
+    state tempState = ants[i].antState;//if I use a getstate, it gets optimised out resulting in weirdness
     //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
     if (tempState != WANDER){
         if (tempState == SEEK){
