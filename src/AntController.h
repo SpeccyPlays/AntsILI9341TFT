@@ -25,7 +25,6 @@ private:
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
     const uint8_t antDetectRadius = 8;//size of circle to detect another ant
     const float avoidanceFactor = 0.005;
-    int8_t maxSpeed = 4;
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
     byte leaderNumber = 0;
     CoOrds foodPos = {.x = 0, .y = 0};

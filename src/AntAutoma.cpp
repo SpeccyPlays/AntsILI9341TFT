@@ -63,8 +63,8 @@ uint8_t Ant::detectCollision(int16_t &x, int16_t &y, int16_t r){
   Check if we're in the circle of x and y
   Including the radius as there's a different range for if we hit another ant or desired location
   */
-  int16_t dx = x - currentPos.x;
-  int16_t dy = y - currentPos.y;
+  int32_t dx = x - currentPos.x;
+  int32_t dy = y - currentPos.y;
   uint16_t rr = r * r; //(r + r) * (r + r);
   uint32_t distance = (dx * dx) + (dy * dy);
   if ( distance <= rr ){

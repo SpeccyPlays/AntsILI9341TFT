@@ -23,12 +23,12 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   antsCtl.init(4);
-  antsCtl.setRandomLeader();
-  antsCtl.setToFollowLeader();
+  //antsCtl.setRandomLeader();
+  //antsCtl.setToFollowLeader();
 }
 void loop() {
-  //antsCtl.checkTouchScreen();
+  antsCtl.checkTouchScreen();
   antsCtl.moveAnts();
   delay(waitDelay);
-  //antsCtl.checkFoodRemoveTimer();
+  antsCtl.checkFoodRemoveTimer();
 }

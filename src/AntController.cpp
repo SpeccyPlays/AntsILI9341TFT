@@ -40,7 +40,6 @@ void AntController::checkFoodRemoveTimer(){
     startTime = 0;
     showingFood = 0;
     removeCoords(foodPos.x, foodPos.y, collisionDetectRadius);
-    //setToWander();
   }
 }
 void AntController::moveAnts(){
@@ -69,7 +68,7 @@ void AntController::moveAnts(){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
                 ants[i].antState = HASFOOD;
-                ants[i].color = TFT_GREENYELLOW;
+                ants[i].color = TFT_GREEN;
             }
         }
         if (ants[i].antState == WANDER){
