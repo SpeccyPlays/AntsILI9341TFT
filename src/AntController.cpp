@@ -84,8 +84,7 @@ void AntController::moveAnts(){
         }
         else if (ants[i].antState == FOLLOW){
             if (i != leaderNumber){
-                uint8_t widerCollisionRadius = collisionDetectRadius * 2;
-                ants[i].slowDown(widerCollisionRadius);
+                ants[i].slowDown(collisionDetectRadius);
                 ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getDesiredY());
             }
         }

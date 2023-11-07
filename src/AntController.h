@@ -19,12 +19,13 @@ private:
     /****
      * Update both numOfAnts to the same value other behaviour may not be as expected
     */
-    byte numOfAnts = 25;
+    const byte numOfAnts = 25;
     Ant ants[25];
     uint8_t boundary = 5;//screenboundary
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
-    uint8_t antDetectRadius = 8;//size of circle to detect another ant
-    float avoidanceFactor = 0.005;
+    const uint8_t antDetectRadius = 8;//size of circle to detect another ant
+    const float avoidanceFactor = 0.005;
+    int8_t maxSpeed = 4;
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
     byte leaderNumber = 0;
     CoOrds foodPos = {.x = 0, .y = 0};

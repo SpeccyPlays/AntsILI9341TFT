@@ -34,6 +34,8 @@ class Ant {
     void wandering();
     void steering();
     void slowDown(uint8_t &collisionDetectRadius);
+    void slowDown();
+    void queue();
     void locomotion();
     int16_t color;
     uint8_t detectCollision(int16_t &x, int16_t &y, int16_t r);

@@ -87,6 +87,18 @@ void Ant::slowDown(uint8_t &collisionDetectRadius){
         }
     }
 };
+void Ant::slowDown(){
+    if (velocity.x != 0){
+        velocity.x /= 2;
+    }
+    if (velocity.y != 0){
+        velocity.y /= 2;
+    }
+};
+void Ant::queue(){
+    velocity.x = 0;
+    velocity.y = 0;
+};
 void Ant::seeking(int16_t x, int16_t y){
     setDesired(x, y);
 };
