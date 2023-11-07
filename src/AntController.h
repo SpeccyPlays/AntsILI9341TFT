@@ -16,6 +16,9 @@ private:
     TFT_ILI9341 tft;
     int16_t screenWidth;
     int16_t screenHeight;
+    /****
+     * Update both numOfAnts to the same value other behaviour may not be as expected
+    */
     byte numOfAnts = 25;
     Ant ants[25];
     uint8_t boundary = 5;//screenboundary
@@ -23,6 +26,7 @@ private:
     uint8_t antDetectRadius = 8;//size of circle to detect another ant
     float avoidanceFactor = 0.005;
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
+    byte leaderNumber = 0;
     CoOrds foodPos = {.x = 0, .y = 0};
     CoOrds avoidPos ={.x = 0, .y = 0};
     CoOrds basePos = {.x = 0, .y = 0};
@@ -32,6 +36,7 @@ private:
     unsigned long startTime = 0;
     const unsigned long foodDisplayTime = 20000;
 public:
+    void setRandomLeader();
     AntController(int16_t screenWidth, int16_t screenHeight);
     void init(int8_t startSpeed);
     void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
@@ -40,6 +45,7 @@ public:
     void setToAvoid(int16_t x, int16_t y);
     void setToWander();
     void setToSeek(int16_t x, int16_t y);
+    void setToFollowLeader();//run setRandomLeader first
     void checkTouchScreen();
     void checkFoodRemoveTimer();
 

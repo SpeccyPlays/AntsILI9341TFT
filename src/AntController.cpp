@@ -19,6 +19,9 @@ void AntController::init(int8_t startSpeed){
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
 };
+void AntController::setRandomLeader(){
+    leaderNumber = random(0, numOfAnts);
+};
 void AntController::checkTouchScreen(){
     if (!showingFood){
         if (touch.Pressed()){
@@ -79,6 +82,13 @@ void AntController::moveAnts(){
                 ants[i].color = TFT_WHITE;
             }
         }
+        else if (ants[i].antState == FOLLOW){
+            if (i != leaderNumber){
+                uint8_t widerCollisionRadius = collisionDetectRadius * 2;
+                ants[i].slowDown(widerCollisionRadius);
+                ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getDesiredY());
+            }
+        }
         ants[i].steering();
         ants[i].locomotion();
         tft.drawCircle(ants[i].getOldX(), ants[i].getOldY(), 2, TFT_BLACK);
@@ -95,6 +105,16 @@ void AntController::setToSeek(int16_t x, int16_t y){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].antState = SEEK;
         ants[i].setDesired(x, y);
+    }
+};
+void AntController::setToFollowLeader(){
+    ants[leaderNumber].antState = WANDER;
+    for (byte i = 0; i < numOfAnts; i++){
+        if (i != leaderNumber){
+            ants[i].antState = FOLLOW;
+            ants[i].color = TFT_YELLOW;
+            ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getCurrentY());
+        }
     }
 };
 void AntController::setToAvoid(int16_t x, int16_t y){
