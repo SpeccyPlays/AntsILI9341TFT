@@ -23,7 +23,7 @@ private:
     Ant ants[25];
     uint8_t boundary = 5;//screenboundary
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
-    const uint8_t antDetectRadius = 8;//size of circle to detect another ant
+    const uint8_t antDetectRadius = 4;//size of circle to detect another ant
     const float avoidanceFactor = 0.005;
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
     byte leaderNumber = 0;

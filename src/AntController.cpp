@@ -47,6 +47,7 @@ void AntController::moveAnts(){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary);
+        ants[i].steering();
         int32_t dx = 0;
         int32_t dy = 0;
         uint16_t neighbourAnts = 0;
@@ -62,6 +63,7 @@ void AntController::moveAnts(){
         if (neighbourAnts > 0){
             ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
             ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
+            ants[i].color = TFT_RED;
         }
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
         if (showingFood){
@@ -87,7 +89,7 @@ void AntController::moveAnts(){
                 ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getDesiredY());
             }
         }
-        ants[i].steering();
+
         ants[i].locomotion();
         tft.drawCircle(ants[i].getOldX(), ants[i].getOldY(), 2, TFT_BLACK);
         tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, ants[i].color);
