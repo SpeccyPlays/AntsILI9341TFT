@@ -63,7 +63,6 @@ void AntController::moveAnts(){
         if (neighbourAnts > 0){
             ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
             ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
-            ants[i].color = TFT_RED;
         }
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
         if (showingFood){
