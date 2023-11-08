@@ -47,6 +47,7 @@ void AntController::moveAnts(){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary);
+        //collision detection works better if steering here
         ants[i].steering();
         int32_t dx = 0;
         int32_t dy = 0;
@@ -60,10 +61,17 @@ void AntController::moveAnts(){
                 }
             }
         }
-        if (neighbourAnts > 0){
-            ants[i].addToVelocityX((dx / neighbourAnts) * avoidanceFactor);
-            ants[i].addToVelocityY((dy / neighbourAnts) * avoidanceFactor);
+        /***** chatGPT wrote this bit for avoiding neighbours
+         ***** the sqrt slows it down a bit but not much **/
+        int16_t distance = sqrt(dx * dx + dy * dy);
+        if (neighbourAnts > 0 && distance < minSeparationDistance) {
+            // Calculate a separation force to move the ant away from its neighbors
+            int16_t separationForceX = -(dx / distance) * minSeparationDistance;
+            int16_t separationForceY = -(dy / distance) * minSeparationDistance;
+            ants[i].addToVelocityX(separationForceX);
+            ants[i].addToVelocityY(separationForceY);
         }
+        /***** end of chatgpt code ***/
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
         if (showingFood){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
@@ -84,7 +92,8 @@ void AntController::moveAnts(){
         }
         else if (ants[i].antState == FOLLOW){
             if (i != leaderNumber){
-                ants[i].slowDown(collisionDetectRadius);
+                uint8_t leaderRadius = collisionDetectRadius * 2;
+                ants[i].slowDown(leaderRadius);
                 ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getDesiredY());
             }
         }

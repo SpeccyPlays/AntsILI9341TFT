@@ -16,19 +16,19 @@ set number of ants in AntController.h
 const uint16_t SCREENWIDTH = 320;
 const uint16_t SCREENHEIGHT = 240;
 //TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
-byte waitDelay = 50;
+byte waitDelay = 30;
 AntController antsCtl(SCREENWIDTH, SCREENHEIGHT);
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   antsCtl.init(4);
-  //antsCtl.setRandomLeader();
-  //antsCtl.setToFollowLeader();
+  antsCtl.setRandomLeader();
+  antsCtl.setToFollowLeader();
 }
 void loop() {
-  antsCtl.checkTouchScreen();
+  //antsCtl.checkTouchScreen();
   antsCtl.moveAnts();
   delay(waitDelay);
-  antsCtl.checkFoodRemoveTimer();
+  //antsCtl.checkFoodRemoveTimer();
 }
