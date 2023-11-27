@@ -14,7 +14,7 @@ void AntController::init(int8_t startSpeed){
     randomSeed(analogRead(0));
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].resetAnt(screenWidth, screenHeight, startSpeed, boundary);
-        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, ants[i].color);
+        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, colors[ants[i].antState]);
     }
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
@@ -77,7 +77,6 @@ void AntController::moveAnts(){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
                 ants[i].antState = HASFOOD;
-                ants[i].color = TFT_GREEN;
             }
         }
         if (ants[i].antState == WANDER){
@@ -87,7 +86,6 @@ void AntController::moveAnts(){
             ants[i].slowDown(collisionDetectRadius);
             if (ants[i].detectCollision(basePos.x, basePos.y, collisionDetectRadius)){
                 ants[i].antState = WANDER;
-                ants[i].color = TFT_WHITE;
             }
         }
         else if (ants[i].antState == FOLLOW){
@@ -100,13 +98,12 @@ void AntController::moveAnts(){
 
         ants[i].locomotion();
         tft.drawCircle(ants[i].getOldX(), ants[i].getOldY(), 2, TFT_BLACK);
-        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, ants[i].color);
+        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, colors[ants[i].antState]);
     }
 };
 void AntController::setToWander(){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].antState = WANDER;
-        ants[i].color = TFT_WHITE;
     }
 };
 void AntController::setToSeek(int16_t x, int16_t y){
@@ -120,7 +117,6 @@ void AntController::setToFollowLeader(){
     for (byte i = 0; i < numOfAnts; i++){
         if (i != leaderNumber){
             ants[i].antState = FOLLOW;
-            ants[i].color = TFT_YELLOW;
             ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getCurrentY());
         }
     }

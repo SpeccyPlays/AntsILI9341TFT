@@ -49,7 +49,7 @@ public:
     void setToFollowLeader();//run setRandomLeader first
     void checkTouchScreen();
     void checkFoodRemoveTimer();
-
+    const uint16_t colors[5] = {TFT_WHITE, TFT_ORANGE, TFT_GREEN, TFT_YELLOW, TFT_MAGENTA};//colors for states in AntAutoma.h
 }; //end class
 
 

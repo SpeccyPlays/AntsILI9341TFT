@@ -6,7 +6,6 @@ void Ant::resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity, u
     this->antState = WANDER;
     this->velocity.x = 4;
     this->velocity.y = 4;
-    color = TFT_WHITE;
     setDesired(screenWidth / 2, screenHeight / 2);
 };
 void Ant::setCurrentPosToOldPos(){

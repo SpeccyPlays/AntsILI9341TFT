@@ -37,7 +37,6 @@ class Ant {
     void slowDown();
     void queue();
     void locomotion();
-    int16_t color;
     uint8_t detectCollision(int16_t &x, int16_t &y, int16_t r);
     state antState; //if I use a get state then it gets optimised out by the compiler
     CoOrds currentPos;//where we're at now
