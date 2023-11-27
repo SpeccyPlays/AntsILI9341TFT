@@ -13,8 +13,6 @@ class Ant {
     These are used to determine the ants behavious
     */
     const static int8_t maxSpeed = 4;//Top speed of the ant
-    const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
-    const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
     public :
     void resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity, uint8_t boundary);
     int16_t getDesiredX();
@@ -24,10 +22,10 @@ class Ant {
     void setAvoidPos(int16_t x, int16_t y);
     void addToVelocityX(int32_t x);
     void addToVelocityY(int32_t y);
-    void checkBoundary(int16_t &width, int16_t &height, uint8_t &boundary);
+    void checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary);
     void seeking(int16_t x, int16_t y);
-    void wandering();
-    void steering();
+    void wandering(const int8_t &wanderingDistance);
+    void steering(const int8_t &maxForce);
     void slowDown(uint8_t &collisionDetectRadius);
     void slowDown();
     void queue();

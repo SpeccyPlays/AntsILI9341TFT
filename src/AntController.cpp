@@ -48,7 +48,7 @@ void AntController::moveAnts(){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary);
         //collision detection works better if steering here
-        ants[i].steering();
+        ants[i].steering(maxForce);
         int32_t dx = 0;
         int32_t dy = 0;
         uint8_t neighbourAnts = 0;
@@ -80,7 +80,7 @@ void AntController::moveAnts(){
             }
         }
         if (ants[i].antState == WANDER){
-            ants[i].wandering();
+            ants[i].wandering(wanderingDistance);
         }
         else if (ants[i].antState == HASFOOD){
             ants[i].slowDown(collisionDetectRadius);

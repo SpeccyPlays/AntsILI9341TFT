@@ -21,11 +21,13 @@ private:
     */
     const byte numOfAnts = 25;
     Ant ants[25];
-    uint8_t boundary = 5;//screenboundary
+    const static uint8_t boundary = 5;//screenboundary
+    const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
+    const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
     const uint8_t antDetectRadius = 4;//size of circle to detect another ant
     const float avoidanceFactor = 0.01;
-    const int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
+    const static int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
     byte leaderNumber = 0;
     CoOrds foodPos = {.x = 0, .y = 0};
@@ -35,7 +37,7 @@ private:
     uint8_t showingAvoid = 0;
     //used for timing how long to show the food for
     unsigned long startTime = 0;
-    const unsigned long foodDisplayTime = 20000;
+    const static unsigned long foodDisplayTime = 20000;
 public:
     void setRandomLeader();
     AntController(uint16_t screenWidth, uint16_t screenHeight);

@@ -42,7 +42,7 @@ void Ant::addToVelocityX(int32_t x){
 void Ant::addToVelocityY(int32_t y){
     velocity.y += y;
 };
-void Ant::checkBoundary(int16_t &width, int16_t &height, uint8_t &boundary){
+void Ant::checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary){
     //check if we're going to go off screen
     if (currentPos.x < boundary){
         velocity.x += 2;
@@ -101,7 +101,7 @@ void Ant::queue(){
 void Ant::seeking(int16_t x, int16_t y){
     setDesired(x, y);
 };
-void Ant::wandering(){
+void Ant::wandering(const int8_t &wanderingDistance){
     /*
     Go to a point in front of the ant
     Pick a random point on a circle from there
@@ -142,7 +142,7 @@ void Ant::calculateVelocties(){
         desiredVelocity.y = -maxSpeed;
     }
 };
-void Ant::steering(){
+void Ant::steering(const int8_t &maxForce){
     /*
     How much the ant will turn towards it's desired destination
     Use the class maxforce value to limit or increase the turning force
@@ -169,18 +169,6 @@ void Ant::locomotion(){
     currentPos.x += velocity.x;
     currentPos.y += velocity.y;
 };
-/*int16_t Ant::getCurrentX(){
-    return currentPos.x;
-};
-int16_t Ant::getCurrentY(){
-    return currentPos.y;
-};
-int16_t Ant::getOldX(){
-    return oldPos.x;
-};
-int16_t Ant::getOldY(){
-    return oldPos.y;
-};*/
 int16_t Ant::getDesiredX(){
     return desired.x;
 };
