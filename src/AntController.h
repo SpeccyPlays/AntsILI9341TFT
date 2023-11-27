@@ -39,7 +39,6 @@ private:
     unsigned long startTime = 0;
     const static unsigned long foodDisplayTime = 20000;
 public:
-    void setRandomLeader();
     AntController(uint16_t screenWidth, uint16_t screenHeight);
     void init(int8_t startSpeed);
     void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
@@ -48,6 +47,7 @@ public:
     void setToAvoid(int16_t x, int16_t y);
     void setToWander();
     void setToSeek(int16_t x, int16_t y);
+    void setRandomLeader();
     void setToFollowLeader();//run setRandomLeader first
     void checkTouchScreen();
     void checkFoodRemoveTimer();
