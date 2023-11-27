@@ -48,6 +48,29 @@ void AntController::moveAnts(){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary);
         //collision detection works better if steering here
+                //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
+        if (showingFood){
+            if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
+                ants[i].setDesired(basePos.x, basePos.y);
+                ants[i].antState = HASFOOD;
+            }
+        }
+        if (ants[i].antState == WANDER){
+            ants[i].wandering(wanderingDistance);
+        }
+        else if (ants[i].antState == HASFOOD){
+            ants[i].slowDown(collisionDetectRadius);
+            if (ants[i].detectCollision(basePos.x, basePos.y, collisionDetectRadius)){
+                ants[i].antState = WANDER;
+            }
+        }
+        else if (ants[i].antState == FOLLOW){
+            if (i != leaderNumber){
+                uint8_t leaderRadius = collisionDetectRadius * 2;
+                ants[i].slowDown(leaderRadius);
+                ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
+            }
+        }
         ants[i].steering(maxForce);
         int32_t dx = 0;
         int32_t dy = 0;
@@ -72,30 +95,6 @@ void AntController::moveAnts(){
             ants[i].addToVelocityY(separationForceY);
         }
         /***** end of chatgpt code ***/
-        //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
-        if (showingFood){
-            if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
-                ants[i].setDesired(basePos.x, basePos.y);
-                ants[i].antState = HASFOOD;
-            }
-        }
-        if (ants[i].antState == WANDER){
-            ants[i].wandering(wanderingDistance);
-        }
-        else if (ants[i].antState == HASFOOD){
-            ants[i].slowDown(collisionDetectRadius);
-            if (ants[i].detectCollision(basePos.x, basePos.y, collisionDetectRadius)){
-                ants[i].antState = WANDER;
-            }
-        }
-        else if (ants[i].antState == FOLLOW){
-            if (i != leaderNumber){
-                uint8_t leaderRadius = collisionDetectRadius * 2;
-                ants[i].slowDown(leaderRadius);
-                ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
-            }
-        }
-
         ants[i].locomotion();
         removeCoords(ants[i].oldPos.x, ants[i].oldPos.y, 2);
         showCoords(ants[i].currentPos.x, ants[i].currentPos.y, 2, colors[ants[i].antState]);

@@ -3,10 +3,6 @@
 #include "TFT_Touch.h"
 #include "AntController.h"
 #include "AntAutoma.h"
-//#define DOUT 3  /* Data out pin (T_DO) of touch screen */
-//#define DIN  4  /* Data in pin (T_DIN) of touch screen */
-//#define DCS  5  /* Chip select pin (T_CS) of touch screen */
-//#define DCLK 6  /* Clock pin (T_CLK) of touch screen */
 /*
 This is intended as an ant simulator to run on an Arduino Uno connected to a ILI9341 TFT
 set number of ants in AntController.h
@@ -28,11 +24,7 @@ void setup() {
 }
 void loop() {
   antsCtl.checkTouchScreen();
-  unsigned long startTime = millis();
   antsCtl.moveAnts();
-  unsigned long endTime = millis();
-  Serial.print("Update ants time : ");
-  Serial.println((endTime - startTime));
   delay(waitDelay);
   antsCtl.checkFoodRemoveTimer();
 }
