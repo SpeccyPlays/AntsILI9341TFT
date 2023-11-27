@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include "AntController.h"
 
-AntController::AntController(int16_t screenWidth, int16_t screenHeight){
+AntController::AntController(uint16_t screenWidth, uint16_t screenHeight){
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight;
-    TFT_ILI9341 temp(screenWidth, screenHeight);
+    TFT_ILI9341 temp(this->screenWidth, this->screenHeight);
     this->tft = temp;
 };
 void AntController::init(int8_t startSpeed){
@@ -14,7 +14,7 @@ void AntController::init(int8_t startSpeed){
     randomSeed(analogRead(0));
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].resetAnt(screenWidth, screenHeight, startSpeed, boundary);
-        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, colors[ants[i].antState]);
+        tft.drawCircle(ants[i].currentPos.x, ants[i].currentPos.y, 2, colors[ants[i].antState]);
     }
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
@@ -51,7 +51,7 @@ void AntController::moveAnts(){
         ants[i].steering();
         int32_t dx = 0;
         int32_t dy = 0;
-        uint16_t neighbourAnts = 0;
+        uint8_t neighbourAnts = 0;
         for (byte j = 0; j < numOfAnts; j++){
             if(i != j){
                 if(ants[i].detectCollision(ants[j].currentPos.x, ants[j].currentPos.y, antDetectRadius)){
@@ -92,13 +92,13 @@ void AntController::moveAnts(){
             if (i != leaderNumber){
                 uint8_t leaderRadius = collisionDetectRadius * 2;
                 ants[i].slowDown(leaderRadius);
-                ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getDesiredY());
+                ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
             }
         }
 
         ants[i].locomotion();
-        tft.drawCircle(ants[i].getOldX(), ants[i].getOldY(), 2, TFT_BLACK);
-        tft.drawCircle(ants[i].getCurrentX(), ants[i].getCurrentY(), 2, colors[ants[i].antState]);
+        removeCoords(ants[i].oldPos.x, ants[i].oldPos.y, 2);
+        showCoords(ants[i].currentPos.x, ants[i].currentPos.y, 2, colors[ants[i].antState]);
     }
 };
 void AntController::setToWander(){
@@ -117,7 +117,7 @@ void AntController::setToFollowLeader(){
     for (byte i = 0; i < numOfAnts; i++){
         if (i != leaderNumber){
             ants[i].antState = FOLLOW;
-            ants[i].setDesired(ants[leaderNumber].getCurrentX(), ants[leaderNumber].getCurrentY());
+            ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
         }
     }
 };

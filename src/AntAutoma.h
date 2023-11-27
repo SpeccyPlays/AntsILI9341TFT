@@ -17,13 +17,8 @@ class Ant {
     const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
     public :
     void resetAnt(uint16_t screenWidth, uint16_t screenHeight, byte velocity, uint8_t boundary);
-    int16_t getCurrentX();
-    int16_t getCurrentY();
-    int16_t getOldX();
-    int16_t getOldY();
     int16_t getDesiredX();
     int16_t getDesiredY();
-    state getState();
     void setCurrentPosToOldPos();
     void setDesired(int16_t x, int16_t y);
     void setAvoidPos(int16_t x, int16_t y);

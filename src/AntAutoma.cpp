@@ -169,7 +169,7 @@ void Ant::locomotion(){
     currentPos.x += velocity.x;
     currentPos.y += velocity.y;
 };
-int16_t Ant::getCurrentX(){
+/*int16_t Ant::getCurrentX(){
     return currentPos.x;
 };
 int16_t Ant::getCurrentY(){
@@ -180,13 +180,10 @@ int16_t Ant::getOldX(){
 };
 int16_t Ant::getOldY(){
     return oldPos.y;
-};
+};*/
 int16_t Ant::getDesiredX(){
     return desired.x;
 };
 int16_t Ant::getDesiredY(){
     return desired.y;
-};
-state Ant::getState(){
-    return antState;
 };

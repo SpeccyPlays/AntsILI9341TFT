@@ -38,7 +38,7 @@ private:
     const unsigned long foodDisplayTime = 20000;
 public:
     void setRandomLeader();
-    AntController(int16_t screenWidth, int16_t screenHeight);
+    AntController(uint16_t screenWidth, uint16_t screenHeight);
     void init(int8_t startSpeed);
     void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
     void removeCoords(int16_t &x, int16_t &y, int16_t size);
