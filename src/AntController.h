@@ -26,7 +26,7 @@ private:
     const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
     const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
-    const uint8_t antDetectRadius = 4;//size of circle to detect another ant
+    const uint8_t antDetectRadius = antSize * 2;//size of circle to detect another ant
     const float avoidanceFactor = 0.01;
     const static int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
