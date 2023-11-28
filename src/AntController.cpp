@@ -82,9 +82,11 @@ void AntController::moveAnts(){
         }
         //collision detection works better if steering here
         ants[i].steering(maxForce);
+        //required for collision detection calculations
         int32_t dx = 0;
         int32_t dy = 0;
         uint8_t neighbourAnts = 0;
+        //loop through all ants to check for collisions
         for (byte j = 0; j < numOfAnts; j++){
             if(i != j){
                 if(ants[i].detectCollision(ants[j].currentPos.x, ants[j].currentPos.y, antDetectRadius)){
@@ -132,6 +134,7 @@ void AntController::setToSeek(int16_t x, int16_t y){
     }
 };
 void AntController::setToFollowLeader(){
+    setRandomLeader();
     ants[leaderNumber].antState = WANDER;
     for (byte i = 0; i < numOfAnts; i++){
         if (i != leaderNumber){

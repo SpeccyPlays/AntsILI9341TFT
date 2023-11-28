@@ -41,6 +41,7 @@ private:
     //used for timing how long to show the food for
     unsigned long startTime = 0;
     const static unsigned long foodDisplayTime = 20000;
+    void setRandomLeader();
 public:
     AntController(uint16_t screenWidth, uint16_t screenHeight);
     void init(int8_t startSpeed);
@@ -50,7 +51,6 @@ public:
     void setToAvoid(int16_t x, int16_t y);
     void setToWander();
     void setToSeek(int16_t x, int16_t y);
-    void setRandomLeader();
     void setToFollowLeader();//run setRandomLeader first
     void setRandomPredator();
     void checkTouchScreen();
