@@ -14,13 +14,22 @@ void AntController::init(int8_t startSpeed){
     randomSeed(analogRead(0));
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].resetAnt(screenWidth, screenHeight, startSpeed, boundary);
-        tft.drawCircle(ants[i].currentPos.x, ants[i].currentPos.y, 2, colors[ants[i].antState]);
+        tft.drawCircle(ants[i].currentPos.x, ants[i].currentPos.y, antSize, colors[ants[i].antState]);
     }
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
 };
 void AntController::setRandomLeader(){
     leaderNumber = random(0, numOfAnts);
+};
+void AntController::setRandomPredator(){
+    preyNumber = random(0, numOfAnts);
+    ants[preyNumber].antState = PREDATOR;
+    for (byte i = 0; i < numOfAnts; i++){
+        if (i != preyNumber){
+            ants[i].antState = WANDER;
+        }
+    }
 };
 void AntController::checkTouchScreen(){
     if (!showingFood){
@@ -47,8 +56,7 @@ void AntController::moveAnts(){
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary);
-        //collision detection works better if steering here
-                //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
+        //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
         if (showingFood){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
@@ -71,6 +79,7 @@ void AntController::moveAnts(){
                 ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
             }
         }
+        //collision detection works better if steering here
         ants[i].steering(maxForce);
         int32_t dx = 0;
         int32_t dy = 0;
@@ -96,8 +105,8 @@ void AntController::moveAnts(){
         }
         /***** end of chatgpt code ***/
         ants[i].locomotion();
-        removeCoords(ants[i].oldPos.x, ants[i].oldPos.y, 2);
-        showCoords(ants[i].currentPos.x, ants[i].currentPos.y, 2, colors[ants[i].antState]);
+        removeCoords(ants[i].oldPos.x, ants[i].oldPos.y, antSize);
+        showCoords(ants[i].currentPos.x, ants[i].currentPos.y, antSize, colors[ants[i].antState]);
     }
 };
 void AntController::setToWander(){

@@ -20,6 +20,7 @@ private:
      * Update both numOfAnts to the same value other behaviour may not be as expected
     */
     const byte numOfAnts = 25;
+    byte antSize = 2;
     Ant ants[25];
     const static uint8_t boundary = 5;//screenboundary
     const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
@@ -30,6 +31,7 @@ private:
     const static int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
     byte leaderNumber = 0;
+    byte preyNumber = 0;
     CoOrds foodPos = {.x = 0, .y = 0};
     CoOrds avoidPos ={.x = 0, .y = 0};
     CoOrds basePos = {.x = 0, .y = 0};
@@ -49,6 +51,7 @@ public:
     void setToSeek(int16_t x, int16_t y);
     void setRandomLeader();
     void setToFollowLeader();//run setRandomLeader first
+    void setRandomPredator();
     void checkTouchScreen();
     void checkFoodRemoveTimer();
     const uint16_t colors[5] = {TFT_WHITE, TFT_ORANGE, TFT_GREEN, TFT_YELLOW, TFT_MAGENTA};//colors for states in AntAutoma.h

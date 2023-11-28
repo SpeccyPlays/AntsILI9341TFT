@@ -6,7 +6,7 @@
 /*
 This is the class for a single ant in the system
 */
-enum state {WANDER = 0, SEEK = 1, HASFOOD = 2, FOLLOW = 3, NOMATES = 4};
+enum state {WANDER = 0, SEEK = 1, HASFOOD = 2, FOLLOW = 3, PREDATOR = 4};
 class Ant {
     /*
     All the class instances
