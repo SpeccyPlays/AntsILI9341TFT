@@ -34,21 +34,19 @@ private:
     byte predatorNumber = 0;
     byte predatorLose = 0;
     CoOrds foodPos = {.x = 0, .y = 0};
-    CoOrds avoidPos ={.x = 0, .y = 0};
     CoOrds basePos = {.x = 0, .y = 0};
     uint8_t showingFood = 0;
-    uint8_t showingAvoid = 0;
     //used for timing how long to show the food for
     unsigned long startTime = 0;
     const static unsigned long foodDisplayTime = 20000;
     void setRandomLeader();
+    void drawHud();
 public:
     AntController(uint16_t screenWidth, uint16_t screenHeight);
     void init(int8_t startSpeed);
     void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
     void removeCoords(int16_t &x, int16_t &y, int16_t size);
     void moveAnts();
-    void setToAvoid(int16_t x, int16_t y);
     void setToWander();
     void setToSeek(int16_t x, int16_t y);
     void setToFollowLeader();//run setRandomLeader first

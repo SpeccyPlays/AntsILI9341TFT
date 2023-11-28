@@ -19,6 +19,9 @@ void AntController::init(int8_t startSpeed){
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
 };
+void AntController::drawHud(){
+
+};
 void AntController::setRandomLeader(){
     leaderNumber = random(0, numOfAnts);
 };
@@ -58,7 +61,7 @@ void AntController::moveAnts(){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary);
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
-        if (showingFood){
+        if ((showingFood) && (ants[i].antState != PREDATOR)){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
                 ants[i].antState = HASFOOD;
@@ -68,7 +71,8 @@ void AntController::moveAnts(){
             ants[i].wandering(wanderingDistance);
         }
         else if (ants[i].antState == HASFOOD){
-            ants[i].slowDown(collisionDetectRadius);
+            uint8_t baseRad = collisionDetectRadius * 2;
+            ants[i].slowDown(baseRad);
             if (ants[i].detectCollision(basePos.x, basePos.y, collisionDetectRadius)){
                 ants[i].antState = WANDER;
             }
@@ -123,6 +127,7 @@ void AntController::moveAnts(){
     }
 };
 void AntController::setToWander(){
+    predatorLose = 0;
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].antState = WANDER;
     }
@@ -141,11 +146,6 @@ void AntController::setToFollowLeader(){
             ants[i].antState = FOLLOW;
             ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
         }
-    }
-};
-void AntController::setToAvoid(int16_t x, int16_t y){
-    for (byte i = 0; i < numOfAnts; i++){
-        ants[i].setAvoidPos(x, y);
     }
 };
 void AntController::showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color){
