@@ -18,9 +18,21 @@ void AntController::init(int8_t startSpeed){
     }
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
+    basePos.x = screenWidth - boundary;
+    basePos.y = screenHeight - boundary;
+    drawHud();
 };
 void AntController::drawHud(){
-
+    tft.setCursor(5, 5);
+    tft.setTextFont(2);
+    tft.setTextColor(colors[WANDER]);
+    tft.print("WANDER    ");
+    tft.setTextColor(colors[HASFOOD]);
+    tft.print("ADD FOOD  ");
+    tft.setTextColor(colors[FOLLOW]);
+    tft.print("FOLLOW    ");
+    tft.setTextColor(colors[PREDATOR]);
+    tft.print("Add PREDATOR    ");
 };
 void AntController::setRandomLeader(){
     leaderNumber = random(0, numOfAnts);
@@ -112,10 +124,10 @@ void AntController::moveAnts(){
         }
         /***** end of chatgpt code ***/
         if((predatorLose) && (i != predatorNumber)){
-            /*
-            Check if a predator lose, we're not the predator, and avoid
-            the larger collision radius gives much better looking results
-            */
+        /*
+        Check if a predator lose, we're not the predator, and avoid
+        the larger collision radius gives much better looking results
+        */
             if (ants[i].detectCollision(ants[predatorNumber].currentPos.x, ants[predatorNumber].currentPos.y, collisionDetectRadius * 3)){
                 ants[i].addToVelocityX((ants[i].currentPos.x - ants[predatorNumber].currentPos.x) * avoidanceFactor);
                 ants[i].addToVelocityY((ants[i].currentPos.y - ants[predatorNumber].currentPos.y) * avoidanceFactor);

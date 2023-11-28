@@ -50,7 +50,7 @@ void Ant::checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary
     else if (currentPos.x > (width - boundary)){
         velocity.x -= 2;
     }
-    if (currentPos.y < boundary){
+    if (currentPos.y < boundary * 6){
         velocity.y += 2;
     }
     else if (currentPos.y > (height - boundary)){
