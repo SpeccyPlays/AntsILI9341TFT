@@ -23,10 +23,11 @@ void AntController::setRandomLeader(){
     leaderNumber = random(0, numOfAnts);
 };
 void AntController::setRandomPredator(){
-    preyNumber = random(0, numOfAnts);
-    ants[preyNumber].antState = PREDATOR;
+    predatorNumber = random(0, numOfAnts);
+    ants[predatorNumber].antState = PREDATOR;
+    predatorLose = 1;
     for (byte i = 0; i < numOfAnts; i++){
-        if (i != preyNumber){
+        if (i != predatorNumber){
             ants[i].antState = WANDER;
         }
     }
@@ -63,7 +64,7 @@ void AntController::moveAnts(){
                 ants[i].antState = HASFOOD;
             }
         }
-        if (ants[i].antState == WANDER){
+        if (ants[i].antState == WANDER || ants[i].antState == PREDATOR){
             ants[i].wandering(wanderingDistance);
         }
         else if (ants[i].antState == HASFOOD){
@@ -104,6 +105,16 @@ void AntController::moveAnts(){
             ants[i].addToVelocityY(separationForceY);
         }
         /***** end of chatgpt code ***/
+        if((predatorLose) && (i != predatorNumber)){
+            /*
+            Check if a predator lose, we're not the predator, and avoid
+            the larger collision radius gives much better looking results
+            */
+            if (ants[i].detectCollision(ants[predatorNumber].currentPos.x, ants[predatorNumber].currentPos.y, collisionDetectRadius * 3)){
+                ants[i].addToVelocityX((ants[i].currentPos.x - ants[predatorNumber].currentPos.x) * avoidanceFactor);
+                ants[i].addToVelocityY((ants[i].currentPos.y - ants[predatorNumber].currentPos.y) * avoidanceFactor);
+            }
+        }
         ants[i].locomotion();
         removeCoords(ants[i].oldPos.x, ants[i].oldPos.y, antSize);
         showCoords(ants[i].currentPos.x, ants[i].currentPos.y, antSize, colors[ants[i].antState]);

@@ -21,6 +21,7 @@ void setup() {
   antsCtl.init(4);
   //antsCtl.setRandomLeader();
   //antsCtl.setToFollowLeader();
+  antsCtl.setRandomPredator();
 }
 void loop() {
   antsCtl.checkTouchScreen();
