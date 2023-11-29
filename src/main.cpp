@@ -12,7 +12,7 @@ set number of ants in AntController.h
 const uint16_t SCREENWIDTH = 320;
 const uint16_t SCREENHEIGHT = 240;
 //TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
-byte waitDelay = 30;
+byte waitDelay = 20;
 AntController antsCtl(SCREENWIDTH, SCREENHEIGHT);
 
 void setup() {
@@ -21,10 +21,12 @@ void setup() {
   antsCtl.init(4);
   //antsCtl.setToFollowLeader();
   antsCtl.setRandomPredator();
+  antsCtl.autoFeedStart();
 }
 void loop() {
   antsCtl.checkTouchScreen();
   antsCtl.moveAnts();
   delay(waitDelay);
   antsCtl.checkFoodRemoveTimer();
+  antsCtl.checkTimeForAutoFeed();
 }

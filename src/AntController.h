@@ -47,21 +47,21 @@ private:
     const static unsigned long foodDisplayTime = 20000;
     unsigned long autoFeedStartTime = 0;
     const static unsigned long autoFeedDelay = 60000;
-    void setRandomLeader();
+    void setToWander();
+    void setToSeek(int16_t x, int16_t y);
     void drawHud();
+    void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
+    void removeCoords(int16_t &x, int16_t &y, int16_t size);
 public:
     AntController(uint16_t screenWidth, uint16_t screenHeight);
     void init(int8_t startSpeed);
-    void showCoords(int16_t &x, int16_t &y, int16_t size, uint16_t color);
-    void removeCoords(int16_t &x, int16_t &y, int16_t size);
     void moveAnts();
-    void setToWander();
-    void setToSeek(int16_t x, int16_t y);
-    void setToFollowLeader();//run setRandomLeader first
-    void setRandomPredator();
     void checkTouchScreen();
     void autoFeedStart();
     void checkFoodRemoveTimer();
+    void checkTimeForAutoFeed();
+    void setRandomPredator();
+    void setToFollowLeader();
     const uint16_t colors[5] = {TFT_WHITE, TFT_ORANGE, TFT_GREEN, TFT_YELLOW, TFT_MAGENTA};//colors for states in AntAutoma.h
 }; //end class
 

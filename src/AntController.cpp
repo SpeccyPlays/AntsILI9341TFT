@@ -34,9 +34,6 @@ void AntController::drawHud(){
     tft.setTextColor(colors[PREDATOR]);
     tft.print("Add PREDATOR    ");
 };
-void AntController::setRandomLeader(){
-    leaderNumber = random(0, numOfAnts);
-};
 void AntController::setRandomPredator(){
     predatorNumber = random(0, numOfAnts);
     ants[predatorNumber].antState = PREDATOR;
@@ -55,6 +52,7 @@ void AntController::checkTouchScreen(){
             foodPos.x = touch.X();
             foodPos.y = touch.Y();
             showingFood = 1;
+            autoFeedOn = 0;
             showCoords(foodPos.x, foodPos.y, collisionDetectRadius, TFT_GREEN);
             startTime = millis();
         }
@@ -67,14 +65,24 @@ void AntController::autoFeedStart(){
     foodPos.y = random(hudBoundary, screenHeight - boundary);
     showCoords(foodPos.x, foodPos.y, collisionDetectRadius, TFT_GREEN);
     autoFeedStartTime = millis();
+    startTime = millis();
 };
 void AntController::checkFoodRemoveTimer(){
-  if (millis() - startTime > foodDisplayTime){
-    startTime = 0;
-    showingFood = 0;
-    removeCoords(foodPos.x, foodPos.y, collisionDetectRadius);
-  }
-}
+    if (showingFood){
+        if (millis() - startTime > foodDisplayTime){
+            startTime = 0;
+            showingFood = 0;
+            removeCoords(foodPos.x, foodPos.y, collisionDetectRadius);
+        }
+    }
+};
+void AntController::checkTimeForAutoFeed(){
+    if(autoFeedOn){
+        if (millis() - autoFeedStartTime > autoFeedDelay){
+            autoFeedStart();
+        }
+    }
+};
 void AntController::moveAnts(){
     showCoords(basePos.x, basePos.y, collisionDetectRadius * 2, TFT_BLUE);
     for (byte i = 0; i < numOfAnts; i++){
@@ -145,6 +153,7 @@ void AntController::moveAnts(){
         removeCoords(ants[i].oldPos.x, ants[i].oldPos.y, antSize);
         showCoords(ants[i].currentPos.x, ants[i].currentPos.y, antSize, colors[ants[i].antState]);
     }
+    drawHud();//ants can sometimes move over the hud so needs to be redrawn
 };
 void AntController::setToWander(){
     predatorLoose = 0;
@@ -160,7 +169,7 @@ void AntController::setToSeek(int16_t x, int16_t y){
     }
 };
 void AntController::setToFollowLeader(){
-    setRandomLeader();
+    leaderNumber = random(0, numOfAnts);
     ants[leaderNumber].antState = WANDER;
     wanderingOn = 0;
     followLeaderOn = 1;
