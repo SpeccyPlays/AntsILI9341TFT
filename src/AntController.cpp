@@ -43,23 +43,25 @@ void AntController::drawHud(){
     tft.setCursor(hudCol3, boundary);
     tft.setTextColor(colors[PREDATOR]);
     tft.print(" PREDATOR");
+    //fast line uses width which will be the width of hudCol1
     if (wanderingOn){
        tft.drawFastHLine(0, 2, hudCol1, colors[WANDER]); 
     }
     if (autoFeedOn){
-        tft.drawFastHLine(hudCol1, 2, hudCol2, colors[HASFOOD]);
+        tft.drawFastHLine(hudCol1, 2, hudCol1, colors[HASFOOD]);
     }
     if (followLeaderOn){
-        tft.drawFastHLine(hudCol2, 2, hudCol3, colors[FOLLOW]);
+        tft.drawFastHLine(hudCol2, 2, hudCol1, colors[FOLLOW]);
     }
     if (predatorLoose){
-        tft.drawFastHLine(hudCol3, 2, screenWidth, colors[PREDATOR]);
+        tft.drawFastHLine(hudCol3, 2, hudCol1, colors[PREDATOR]);
     }
 };
 void AntController::checkTouchScreen(){
-    if (touch.Pressed()){
+    if (touch.Pressed() && millis() - touchedStart > touchDelay){
         uint16_t touchX = touch.X();
         uint16_t touchY = touch.Y();
+        touchedStart = 0;
         if (touchY < hudBoundary){
             tft.drawFastHLine(0, 2, screenWidth, TFT_BLACK);
             if (touchX < hudCol1){

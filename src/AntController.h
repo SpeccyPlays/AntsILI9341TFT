@@ -34,6 +34,8 @@ private:
     const float avoidanceFactor = 0.1; //used for avoiding a predator
     const static int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
+    const static unsigned long touchDelay = 10000; //to stop double touches
+    unsigned long touchedStart = 11000;
     //Keep track of which ant is predator or leader if they're switched on
     uint8_t leaderNumber = 0;
     uint8_t predatorNumber = 0;
