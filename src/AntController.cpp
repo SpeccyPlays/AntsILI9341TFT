@@ -18,37 +18,70 @@ void AntController::init(int8_t startSpeed){
     }
     touch.setResolution(screenWidth, screenHeight);
     touch.setCal(3555, 680, 3313, 569, 320, 240, 1);
+    wanderingOn = 1;
     basePos.x = screenWidth - boundary;
     basePos.y = screenHeight - boundary;
+    hudCol1 = screenWidth / 4;
+    hudCol2 = hudCol1 * 2;
+    hudCol3 = hudCol1 * 3;
     drawHud();
 };
 void AntController::drawHud(){
-    tft.setCursor(5, 5);
+    tft.setCursor(boundary, boundary);
     tft.setTextFont(2);
     tft.setTextColor(colors[WANDER]);
-    tft.print("WANDER    ");
+    tft.print("  WANDER");
+    
+    tft.setCursor(hudCol1, boundary);
     tft.setTextColor(colors[HASFOOD]);
-    tft.print("ADD FOOD  ");
+    tft.print(" AUTOFEED");
+    
+    tft.setCursor(hudCol2, boundary);
     tft.setTextColor(colors[FOLLOW]);
-    tft.print("FOLLOW    ");
+    tft.print("  FOLLOW");
+    
+    tft.setCursor(hudCol3, boundary);
     tft.setTextColor(colors[PREDATOR]);
-    tft.print("Add PREDATOR    ");
-};
-void AntController::setRandomPredator(){
-    predatorNumber = random(0, numOfAnts);
-    ants[predatorNumber].antState = PREDATOR;
-    predatorLoose = 1;
-    for (byte i = 0; i < numOfAnts; i++){
-        if (i != predatorNumber){
-            ants[i].antState = WANDER;
-        }
+    tft.print(" PREDATOR");
+    if (wanderingOn){
+       tft.drawFastHLine(0, 2, hudCol1, colors[WANDER]); 
+    }
+    if (autoFeedOn){
+        tft.drawFastHLine(hudCol1, 2, hudCol2, colors[HASFOOD]);
+    }
+    if (followLeaderOn){
+        tft.drawFastHLine(hudCol2, 2, hudCol3, colors[FOLLOW]);
+    }
+    if (predatorLoose){
+        tft.drawFastHLine(hudCol3, 2, screenWidth, colors[PREDATOR]);
     }
 };
 void AntController::checkTouchScreen(){
-    if (!showingFood){
-        if (touch.Pressed()){
-            //get the data if the touch screen has been pressed
-            //set food to same values (not sure if can go direct)
+    if (touch.Pressed()){
+        uint16_t touchX = touch.X();
+        uint16_t touchY = touch.Y();
+        if (touchY < hudBoundary){
+            tft.drawFastHLine(0, 2, screenWidth, TFT_BLACK);
+            if (touchX < hudCol1){
+                setToWander();
+            }
+            else if (touchX > hudCol1 && touchX < hudCol2 && !showingFood){
+                //if foods already showing, don't do anything as no capacity for multiple food
+                autoFeedOn = !autoFeedOn;
+                removeCoords(foodPos.x, foodPos.y, collisionDetectRadius);
+                if (autoFeedOn){
+                    autoFeedStart();
+                }
+            }
+            else if (touchX > hudCol2 && touchX < hudCol3){
+                showingFood = 0; //otherwise ants can get food and not follow the leader
+                setToFollowLeader();
+            }
+            else if (touchX > hudCol3){
+                setRandomPredator();
+            }
+        }
+        else if (!showingFood){
             foodPos.x = touch.X();
             foodPos.y = touch.Y();
             showingFood = 1;
@@ -89,7 +122,7 @@ void AntController::moveAnts(){
         ants[i].setCurrentPosToOldPos();
         ants[i].checkBoundary(screenWidth, screenHeight, boundary, hudBoundary);
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
-        if ((showingFood) && (ants[i].antState != PREDATOR)){
+        if ((showingFood) && (ants[i].antState != PREDATOR) && (ants[i].antState != FOLLOW)){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){
                 ants[i].setDesired(basePos.x, basePos.y);
                 ants[i].antState = HASFOOD;
@@ -158,6 +191,7 @@ void AntController::moveAnts(){
 void AntController::setToWander(){
     predatorLoose = 0;
     wanderingOn = 1;
+    followLeaderOn = 0;
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].antState = WANDER;
     }
@@ -178,6 +212,18 @@ void AntController::setToFollowLeader(){
         if (i != leaderNumber){
             ants[i].antState = FOLLOW;
             ants[i].setDesired(ants[leaderNumber].currentPos.x, ants[leaderNumber].currentPos.y);
+        }
+    }
+};
+void AntController::setRandomPredator(){
+    predatorNumber = random(0, numOfAnts);
+    ants[predatorNumber].antState = PREDATOR;
+    predatorLoose = 1;
+    wanderingOn = 0;
+    followLeaderOn = 0;
+    for (byte i = 0; i < numOfAnts; i++){
+        if (i != predatorNumber){
+            ants[i].antState = WANDER;
         }
     }
 };

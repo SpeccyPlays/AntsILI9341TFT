@@ -19,9 +19,6 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   antsCtl.init(4);
-  //antsCtl.setToFollowLeader();
-  antsCtl.setRandomPredator();
-  antsCtl.autoFeedStart();
 }
 void loop() {
   antsCtl.checkTouchScreen();

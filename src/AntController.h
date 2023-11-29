@@ -26,7 +26,10 @@ private:
     const static uint8_t hudBoundary = 30;//how much space the HUD takes up - from y = 0 up
     const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
     const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
-    uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
+    //the size of the circle used to determine if an ant is gonna collide
+    //also used for the size of the food
+    uint8_t collisionDetectRadius = 10;
+
     const uint8_t antDetectRadius = antSize * 2;//size of circle to detect another ant
     const float avoidanceFactor = 0.1; //used for avoiding a predator
     const static int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
@@ -39,6 +42,10 @@ private:
     uint8_t wanderingOn = 0;
     uint8_t followLeaderOn = 0;
     uint8_t autoFeedOn = 0;//this used for HUD and to run the autofeeder
+    uint8_t hudCol1 = 0;
+    uint8_t hudCol2 = 0;
+    uint8_t hudCol3 = 0;
+    //stuff for food
     CoOrds foodPos = {.x = 0, .y = 0};
     CoOrds basePos = {.x = 0, .y = 0};
     uint8_t showingFood = 0;
