@@ -26,6 +26,15 @@ void AntController::init(int8_t startSpeed){
     hudCol3 = hudCol1 * 3;
     drawHud();
 };
+void AntController::run(){
+    checkTouchScreen();
+    if (millis() - runStart > runDelay){
+        moveAnts();
+        checkFoodRemoveTimer();
+        checkTimeForAutoFeed();
+        runStart = 0;
+  }
+}
 void AntController::drawHud(){
     tft.setCursor(boundary, boundary);
     tft.setTextFont(2);
@@ -76,7 +85,8 @@ void AntController::checkTouchScreen(){
                 }
             }
             else if (touchX > hudCol2 && touchX < hudCol3){
-                showingFood = 0; //otherwise ants can get food and not follow the leader
+                showingFood = 0; //otherwise ants can get stuck with food and not following
+                removeCoords(foodPos.x, foodPos.y, collisionDetectRadius);
                 setToFollowLeader();
             }
             else if (touchX > hudCol3){
@@ -84,6 +94,7 @@ void AntController::checkTouchScreen(){
             }
         }
         else if (!showingFood){
+            tft.drawFastHLine(0, 2, screenWidth, TFT_BLACK);
             foodPos.x = touch.X();
             foodPos.y = touch.Y();
             showingFood = 1;
