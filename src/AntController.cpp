@@ -60,8 +60,13 @@ void AntController::checkTouchScreen(){
         }
     }
 };
-void AntController::autoFeed(){
-
+void AntController::autoFeedStart(){
+    autoFeedOn = 1;
+    showingFood = 1;
+    foodPos.x = random(boundary, screenWidth - boundary);
+    foodPos.y = random(hudBoundary, screenHeight - boundary);
+    showCoords(foodPos.x, foodPos.y, collisionDetectRadius, TFT_GREEN);
+    autoFeedStartTime = millis();
 };
 void AntController::checkFoodRemoveTimer(){
   if (millis() - startTime > foodDisplayTime){
@@ -74,7 +79,7 @@ void AntController::moveAnts(){
     showCoords(basePos.x, basePos.y, collisionDetectRadius * 2, TFT_BLUE);
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].setCurrentPosToOldPos();
-        ants[i].checkBoundary(screenWidth, screenHeight, boundary);
+        ants[i].checkBoundary(screenWidth, screenHeight, boundary, hudBoundary);
         //I used a switch before but it caused a lot of unintended behaviour so changed to if statements
         if ((showingFood) && (ants[i].antState != PREDATOR)){
             if (ants[i].detectCollision(foodPos.x, foodPos.y, collisionDetectRadius)){

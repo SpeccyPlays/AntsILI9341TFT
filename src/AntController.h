@@ -23,6 +23,7 @@ private:
     byte antSize = 2;
     Ant ants[25];
     const static uint8_t boundary = 5;//screenboundary
+    const static uint8_t hudBoundary = 30;//how much space the HUD takes up - from y = 0 up
     const static int8_t maxForce = 1;//how much steering force is applied - greater number means more sharp turns (I think)
     const static int8_t wanderingDistance = 4;//how far in front of the ant when setting up wandering
     uint8_t collisionDetectRadius = 10;//the size of the circle used to determine if an ant is gonna collide
@@ -44,6 +45,7 @@ private:
     //used for timing how long to show the food for
     unsigned long startTime = 0;
     const static unsigned long foodDisplayTime = 20000;
+    unsigned long autoFeedStartTime = 0;
     const static unsigned long autoFeedDelay = 60000;
     void setRandomLeader();
     void drawHud();
@@ -58,7 +60,7 @@ public:
     void setToFollowLeader();//run setRandomLeader first
     void setRandomPredator();
     void checkTouchScreen();
-    void autoFeed();
+    void autoFeedStart();
     void checkFoodRemoveTimer();
     const uint16_t colors[5] = {TFT_WHITE, TFT_ORANGE, TFT_GREEN, TFT_YELLOW, TFT_MAGENTA};//colors for states in AntAutoma.h
 }; //end class

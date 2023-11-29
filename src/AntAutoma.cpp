@@ -42,7 +42,7 @@ void Ant::addToVelocityX(int32_t x){
 void Ant::addToVelocityY(int32_t y){
     velocity.y += y;
 };
-void Ant::checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary){
+void Ant::checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary, const uint8_t &hudBoundary){
     //check if we're going to go off screen
     if (currentPos.x < boundary){
         velocity.x += 2;
@@ -50,7 +50,7 @@ void Ant::checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary
     else if (currentPos.x > (width - boundary)){
         velocity.x -= 2;
     }
-    if (currentPos.y < boundary * 6){
+    if (currentPos.y < hudBoundary){
         velocity.y += 2;
     }
     else if (currentPos.y > (height - boundary)){

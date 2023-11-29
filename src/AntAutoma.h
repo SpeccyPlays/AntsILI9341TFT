@@ -22,7 +22,7 @@ class Ant {
     void setAvoidPos(int16_t x, int16_t y);
     void addToVelocityX(int32_t x);
     void addToVelocityY(int32_t y);
-    void checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary);
+    void checkBoundary(int16_t &width, int16_t &height, const uint8_t &boundary, const uint8_t &hudBoundary);
     void seeking(int16_t x, int16_t y);
     void wandering(const int8_t &wanderingDistance);
     void steering(const int8_t &maxForce);
