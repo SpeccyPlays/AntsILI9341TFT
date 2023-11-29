@@ -30,15 +30,21 @@ private:
     const float avoidanceFactor = 0.1; //used for avoiding a predator
     const static int16_t minSeparationDistance = 3;//3 best value for both wandering and follow the leader 
     TFT_Touch touch = TFT_Touch(DCS, DCLK, DIN, DOUT);
-    byte leaderNumber = 0;
-    byte predatorNumber = 0;
-    byte predatorLose = 0;
+    //Keep track of which ant is predator or leader if they're switched on
+    uint8_t leaderNumber = 0;
+    uint8_t predatorNumber = 0;
+    uint8_t predatorLoose = 0; //this used for HUD and to determine if an ant should check for predators
+    //used for the HUD
+    uint8_t wanderingOn = 0;
+    uint8_t followLeaderOn = 0;
+    uint8_t autoFeedOn = 0;//this used for HUD and to run the autofeeder
     CoOrds foodPos = {.x = 0, .y = 0};
     CoOrds basePos = {.x = 0, .y = 0};
     uint8_t showingFood = 0;
     //used for timing how long to show the food for
     unsigned long startTime = 0;
     const static unsigned long foodDisplayTime = 20000;
+    const static unsigned long autoFeedDelay = 60000;
     void setRandomLeader();
     void drawHud();
 public:
@@ -52,6 +58,7 @@ public:
     void setToFollowLeader();//run setRandomLeader first
     void setRandomPredator();
     void checkTouchScreen();
+    void autoFeed();
     void checkFoodRemoveTimer();
     const uint16_t colors[5] = {TFT_WHITE, TFT_ORANGE, TFT_GREEN, TFT_YELLOW, TFT_MAGENTA};//colors for states in AntAutoma.h
 }; //end class

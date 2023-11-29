@@ -40,7 +40,7 @@ void AntController::setRandomLeader(){
 void AntController::setRandomPredator(){
     predatorNumber = random(0, numOfAnts);
     ants[predatorNumber].antState = PREDATOR;
-    predatorLose = 1;
+    predatorLoose = 1;
     for (byte i = 0; i < numOfAnts; i++){
         if (i != predatorNumber){
             ants[i].antState = WANDER;
@@ -59,6 +59,9 @@ void AntController::checkTouchScreen(){
             startTime = millis();
         }
     }
+};
+void AntController::autoFeed(){
+
 };
 void AntController::checkFoodRemoveTimer(){
   if (millis() - startTime > foodDisplayTime){
@@ -123,7 +126,7 @@ void AntController::moveAnts(){
             ants[i].addToVelocityY(separationForceY);
         }
         /***** end of chatgpt code ***/
-        if((predatorLose) && (i != predatorNumber)){
+        if((predatorLoose) && (i != predatorNumber)){
         /*
         Check if a predator lose, we're not the predator, and avoid
         the larger collision radius gives much better looking results
@@ -139,7 +142,8 @@ void AntController::moveAnts(){
     }
 };
 void AntController::setToWander(){
-    predatorLose = 0;
+    predatorLoose = 0;
+    wanderingOn = 1;
     for (byte i = 0; i < numOfAnts; i++){
         ants[i].antState = WANDER;
     }
@@ -153,6 +157,9 @@ void AntController::setToSeek(int16_t x, int16_t y){
 void AntController::setToFollowLeader(){
     setRandomLeader();
     ants[leaderNumber].antState = WANDER;
+    wanderingOn = 0;
+    followLeaderOn = 1;
+    predatorLoose = 0;
     for (byte i = 0; i < numOfAnts; i++){
         if (i != leaderNumber){
             ants[i].antState = FOLLOW;
